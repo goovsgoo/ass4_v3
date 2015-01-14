@@ -36,14 +36,23 @@ private:
 		string convertCommand(string& input);
 		string login(istringstream& iss);
 		string logout();
-		string follow(istringstream& iss);
-		string unfollow(istringstream& iss);
-		string tweet(istringstream& iss);
-		string stop();
-		string clients(istringstream& iss);
-		string stats();
+		//string follow(istringstream& iss);
+		//string unfollow(istringstream& iss);
+		//string tweet(istringstream& iss);
+		//string stop();
+		//string clients(istringstream& iss);
+		//string stats();
 		string getTime();
 		void printLog();
+
+		string listUsers();
+		string listGroups();
+        string listGroup(istringstream& iss);
+		string sendUser(istringstream& iss);
+		string sendGroup(istringstream& iss);
+		string add(istringstream& iss);
+		string remove(istringstream& iss);
+		string exit();
 		
 
 	public:
@@ -57,7 +66,7 @@ private:
 		void connect();
 		void disconnect(int receipt);
 		void disconnect();
-		int fixNextId();
+		//int fixNextId();
 		void log(HttpP::HttpFrame frame);
 		void saveCookie(const HttpFrame& frame);
 

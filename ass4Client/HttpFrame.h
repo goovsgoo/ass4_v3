@@ -44,10 +44,10 @@ public:
 
 /*
  * Client Frames
- */
+ 
 class LoginFrame: public  HttpFrame {
 public:
-	LoginFrame(const std::string& host, const std::string& username, const std::string& phone);
+	LoginFrame(const std::string& username, const std::string& phone);
 };
 
 class LogoutFrame: public HttpFrame {
@@ -69,7 +69,7 @@ class UnsubscribeFrame: public HttpFrame {
 public:
 	UnsubscribeFrame(const int id);
 };
-
+*/
 
 /*
 *input Frames from the server

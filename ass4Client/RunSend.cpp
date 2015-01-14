@@ -33,7 +33,7 @@ void RunSend::run(){
 				isActive_ = false;
 			}
 			else if (command.size() > 0){
-				if (!connectionHandler_->sendFrameAscii(command, '\0')) {
+				if (!connectionHandler_->sendFrameAscii(command, '$')) {
 						std::cout << "Not Connected.\n" << std::endl;
 				}
 			}
@@ -51,15 +51,7 @@ void RunSend::run(){
 
 }
 
-void RunSend::connect() {
-	isConnected_ = true;
-	idMap_[user_] = 0;
-	cout << "Connected Successfully!" << endl;
-	logger_.append("<HTML>\n<HEAD>\n<h1>").append(user_).append("</h1>\n").append(getTime())
-			.append("\n</HEAD>\n<BODY>\n<PRE>\n").append("<table width=\"100%\" border>\n")
-			.append("<tr>").append("<th>Time</th>").append("<th>User</th>").append( "<th>Message</th>")
-			.append("</tr>\n");
-}
+
 
 void RunSend::disconnect(int receipt){
 	if (receipt == receipt_){
@@ -90,13 +82,47 @@ string RunSend::convertCommand(string& input){
 	} else 
 	if (commandName == "Logout"){
 		http = logout();
+	}else 
+	if (commandName == "List"){
+		iss >> commandName;
+		if (commandName == "Users"){
+			http = listUsers();
+		}else 
+		if (commandName == "Groups"){
+			http = listGroups();
+		}
+		else 
+		if (commandName == "Group"){
+			http = listGroup(iss);
+		}
+		else {
+		//unvalid order
+		http = iss.str().append("\n");
+		}
+	}else 
+	if (commandName == "Send"){
+		iss >> commandName;
+		if (commandName == "User"){
+			http = sendUser(iss);
+		}else 
+		if (commandName == "Group"){
+			http = sendGroup(iss);
+		}
+		else {
+		//unvalid order
+		http = iss.str().append("\n");
+		}
+	}else 
+	if (commandName == "Add"){
+		http = add(iss);
+	} else 
+	if (commandName == "Remove"){
+		http = remove(iss);
 	} else 
 	if (commandName == "Exit"){
-		http = stop();
-	} else 
-	if (commandName == "List Users"){
-		http = clients(iss);
+		http = exit();
 	} else {
+		//unvalid order
 		http = iss.str().append("\n");
 	}
 
@@ -117,72 +143,65 @@ void RunSend::FirstConnection(){
 string RunSend::login(istringstream& iss){
 	string username;
 	iss >> username;
-	int phone;
+	string phone;
 	iss >> phone;
+	
+	std::string frame;
+	frame.append("POST /login.jps HTTP/1.1").append("/n");
+	frame.append("/n");
+	frame.append("Username=").append(username).append("&").append("Phone=").append(phone).append("/n");
+	frame.append("$");
 
-	LoginFrame frame(username, phone);
-
-	return frame.toString();
+	return frame;
 }
 
 string RunSend::logout(){
 	cout << "Disconnecting..." << endl;
 
-	receipt_++;
-	DisconnectFrame frame(receipt_);
-	return frame.toString();
+	std::string frame;
+	frame.append("GET /logout.jps HTTP/1.1").append("/n");
+	frame.append("Cookie: ").append(Cookie_);
+	frame.append("/n");
+	frame.append("$");
+
+	return frame;
 }
 
 
-string RunSend::follow(istringstream& iss){
-	string username;
-	iss >> username;
+string RunSend::listUsers(){
+	cout << "listUsers.../n" << endl;
 
-	nextId_++;
-	SubscribeFrame frame(username, nextId_);
-	if (idMap_.find(username) == idMap_.end()){
-		idMap_[username] = nextId_;
-	}
-	return frame.toString();
+	std::string frame;
+	frame.append("GET /list.jps HTTP/1.1").append("/n");
+	frame.append("Cookie: ").append(Cookie_);
+	frame.append("/n");
+	///////////////////////// need type
+	frame.append("$");
+
+	return frame;
 }
-
-
-string RunSend::unfollow(istringstream& iss){
-	string username;
-	iss >> username;
-	UnsubscribeFrame frame(idMap_[username]);
-	idMap_.erase(username);
-	return frame.toString();
+string RunSend::listGroups(){
 }
+string RunSend::listGroup(istringstream& iss){}
+string RunSend::sendUser(istringstream& iss){}
+string RunSend::sendGroup(istringstream& iss){}
+string RunSend::add(istringstream& iss){}
+string RunSend::remove(istringstream& iss){}
+string RunSend::exit(){}
 
+		
+		
+		
+		
+		/*
 string RunSend::tweet(istringstream& iss){
 	string message(iss.str().substr(6, iss.str().size()-6));
 	SendFrame frame(user_, message);
 	return frame.toString();
 }
 
-string RunSend::stop(){
-	SendFrame frame("server", "stop");
-	return frame.toString();
-}
 
-string RunSend::clients(istringstream& iss){
-	string param;
-	iss >> param;
 
-	SendFrame frame("server", "clients\n"+param);
-	return frame.toString();
-}
-
-string RunSend::stats(){
-	SendFrame frame("server", "stats");
-	return frame.toString();
-}
-
-int RunSend::fixNextId() {
-	nextId_--;
-	return nextId_;
-}
 
 string RunSend::getTime() {
 	time_t     now = time(0);
@@ -218,3 +237,4 @@ void RunSend::printLog() {
 }
 
 
+*/

@@ -4,12 +4,19 @@
 
 int main (int argc,char *argv[]) {
 
-	HttpClient::RunSend* client = new HttpClient::RunSend(argv[0],argv[1]);
+	if (argc < 2) {
+        cerr << "Server ip address and port - unvalid" << endl;
+        return -1;
+    }
+    string host = argv[0];
+	short port = (short) strtoul(argv[1], NULL, 0);
 
-	boost::thread threadRunSend(&HttpClient::RunSend::run, &*client);
+	HttpClient::RunSend* client = new HttpClient::RunSend(host,port);
+
+	boost::thread threadRunSend(&*client);
 	threadRunSend.join();
 
-	cout << "***" << endl;
+	cout << "*Start RunSend thread*" << endl;
 
     return 0;
 }

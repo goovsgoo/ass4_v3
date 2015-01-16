@@ -19,11 +19,6 @@ private:
 		RunRecieve* runRecieve_;
 		bool isConnected_;
 		bool isActive_;
-		string user_;
-		int receipt_;
-		string logger_;
-		int nextId_;
-		map<string,int> idMap_;
 		string host_;
 		short port_;
 		string Cookie_;
@@ -36,22 +31,13 @@ private:
 		string convertCommand(string& input);
 		string login(istringstream& iss);
 		string logout();
-		//string follow(istringstream& iss);
-		//string unfollow(istringstream& iss);
-		//string tweet(istringstream& iss);
-		//string stop();
-		//string clients(istringstream& iss);
-		//string stats();
-		string getTime();
-		void printLog();
+		//string getTime();
 
-		string listUsers();
-		string listGroups();
-        string listGroup(istringstream& iss);
-		string sendUser(istringstream& iss);
-		string sendGroup(istringstream& iss);
-		string add(istringstream& iss);
-		string remove(istringstream& iss);
+		string list(istringstream& iss);
+		string CreateGroup(istringstream& iss);
+		string send(istringstream& iss);
+		string addRemove(istringstream& iss,string action);
+		string queue(istringstream& iss);
 		string exit();
 		
 
@@ -60,14 +46,8 @@ private:
 		RunSend();
 		RunSend(string host,short port);
 		~RunSend();
-		void run();
-		void RunSend::run(string host,short port)
-
-		void connect();
-		void disconnect(int receipt);
+		void operator()();
 		void disconnect();
-		//int fixNextId();
-		void log(HttpP::HttpFrame frame);
 		void saveCookie(const HttpFrame& frame);
 
 	};

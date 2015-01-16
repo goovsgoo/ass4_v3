@@ -33,6 +33,6 @@ HttpFrame* Tokenizer::nextFrame(){
 	    }
 
 
-	return ParshFrame::generate(frame);
+	return HttpFrame::generate(frame);
 }
 

@@ -33,7 +33,6 @@ public:
 
  };
 
-
 }
 
 #endif /* TOKENIZER_H_ */

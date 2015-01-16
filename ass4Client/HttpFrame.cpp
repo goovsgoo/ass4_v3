@@ -1,17 +1,13 @@
-/*
- * HttpFrame.cpp
- * Created on: 12.1.2014
- *      Author: Goovsgoo
- */
-
 #include "HttpFrame.h"
 
 using HttpP::HttpFrame;
 
+using namespace std;
 
-HttpFrame::HttpFrame(const std::string& status): status_(status), headers_() , body_(""){}
+HttpFrame::HttpFrame(const string& status): status_(status), headers_() , body_(""){}
 
-HttpFrame::HttpFrame(const string& status, const headerMap& headers, const string& body): status_(status), headers_(headers) , body_(body){}
+HttpFrame::HttpFrame(const string& status, const headerMap& headers, const string& body): status_(status) , headers_(headers) , body_(body){}
+
 
 HttpFrame::~HttpFrame(){}
 
@@ -75,4 +71,4 @@ static HttpFrame* generate(const vector<string>& input) {
 				HttpFrame* frame = new HttpFrame(status, headers, body);
 
 				return frame;
-			}
+}

@@ -48,7 +48,7 @@ private:
 		~RunSend();
 		void operator()();
 		void disconnect();
-		void saveCookie(const HttpFrame& frame);
+		void saveCookie(string Cookie);
 
 	};
 }

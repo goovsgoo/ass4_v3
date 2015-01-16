@@ -99,8 +99,8 @@ string RunSend::convertCommand(string& input){
 	return http;
 }
 
-void RunSend::saveCookie(const HttpFrame& frame){
-	Cookie_=frame.getHeader("set-Cookie");
+void RunSend::saveCookie(string cookie){
+	Cookie_=cookie;
 }
 
 void RunSend::FirstConnection(){

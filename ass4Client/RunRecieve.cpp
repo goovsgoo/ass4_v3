@@ -2,6 +2,8 @@
 
 using HttpClient::RunRecieve;
 using namespace HttpP;
+using namespace HttpClient;
+
 
 RunRecieve::RunRecieve(RunSend& runSend, ConnectionHandler& connectionHandler): runSend_(&runSend), connectionHandler_(&connectionHandler), tokenizer_(), active_(false){
 	tokenizer_ = new Tokenizer(*connectionHandler_);
@@ -37,7 +39,8 @@ void RunRecieve::analyzeFrame(const HttpFrame& frame){
 			std::cout << "server: " << frame.toString() << std::endl;
 	}
 	else if (frame.getStatus() == "HTTP/1.1 200") {
-		runSend_->RunSend::saveCookie(frame);
+		string Cookie = frame.getHeader("set-Cookie");
+		runSend_->RunSend::saveCookie(Cookie);
 		std::cout << "server: " << frame.getBody() << std::endl;
 	}
 	else{
